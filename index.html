@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartPOS Pro</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* ================= SKELETON LOADER STYLES ================= */
+        #skeleton-loader { 
+            display: flex; 
+            height: 100vh; 
+            width: 100vw; 
+            background-color: #f1f5f9; 
+            z-index: 999999; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+        }
+        .skel-sidebar { 
+            width: 250px; 
+            background: #1e293b; 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+        }
+        .skel-main { 
+            flex: 1; 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
+        }
+        .skel-header { 
+            height: 60px; 
+            background: white; 
+            border-radius: 8px; 
+            animation: pulse 1.5s infinite; 
+        }
+        .skel-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 20px; 
+        }
+        .skel-card { 
+            height: 120px; 
+            background: white; 
+            border-radius: 8px; 
+            animation: pulse 1.5s infinite; 
+        }
+        .skel-item { 
+            height: 40px; 
+            background: #334155; 
+            border-radius: 5px; 
+            animation: pulse 1.5s infinite; 
+        }
+        @keyframes pulse { 
+            0% { opacity: 0.6; } 
+            50% { opacity: 0.3; } 
+            100% { opacity: 0.6; } 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="skeleton-loader">
+        <div class="skel-sidebar">
+            <div class="skel-item" style="height: 60px; margin-bottom: 20px;"></div>
+            <div class="skel-item"></div>
+            <div class="skel-item"></div>
+            <div class="skel-item"></div>
+            <div class="skel-item"></div>
+            <div class="skel-item"></div>
+        </div>
+        <div class="skel-main">
+            <div class="skel-header"></div>
+            <div class="skel-grid">
+                <div class="skel-card"></div>
+                <div class="skel-card"></div>
+                <div class="skel-card"></div>
+                <div class="skel-card"></div>
+            </div>
+            <div class="skel-header" style="height: 300px;"></div>
+        </div>
+    </div>
+
+    <div id="saas-landing" style="display: none !important; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at top left, #1e293b, #0f172a 70%); z-index: 100000; overflow-y: auto; color: white; flex-direction: column;">
+        
+        <div style="padding: 20px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); background: rgba(15, 23, 42, 0.8);">
+            <h2 style="color: #38bdf8; margin: 0; cursor: pointer;" onclick="checkAdminAccess()">
+                <img id="landing-app-icon" src="" style="display:none; width:30px; height:30px; border-radius:5px; vertical-align:middle; margin-right:5px; border: 2px solid #fff;">
+                <i id="landing-app-icon-default" class="fa-solid fa-bolt"></i> 
+                <span id="landing-app-name">SmartPOS Pro</span>
+            </h2>  
+        </div>
+        
+        <div style="display: flex; justify-content: center; align-items: center; flex: 1; padding: 40px;">
+            <div style="background: rgba(255,255,255,0.03); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); text-align: center; width: 100%; max-width: 400px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                
+                <h2 style="margin-bottom: 5px; color: #10b981;"><i class="fa-solid fa-lock"></i> POS Login</h2>
+                <p style="color: #94a3b8; font-size: 13px; margin-bottom: 25px;">দয়া করে আপনার লাইসেন্স দিন</p>
+                
+                <label style="display: block; text-align: left; font-weight: bold; color: #cbd5e1; margin-bottom: 5px;">License Key / Admin Pass</label>
+                <input type="text" id="license-key-input" placeholder="e.g. BISMILLAH-01" style="width: 100%; padding: 15px; margin-bottom: 15px; background: #ffffff; border: 2px solid #38bdf8; color: #000000; text-transform: uppercase; font-weight: bold; border-radius: 8px;">
+                
+                <button onclick="activateLicense()" style="width: 100%; padding: 14px; background: #3b82f6; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-bottom: 15px; font-size: 15px; transition: 0.3s;">
+                    <i class="fa-solid fa-right-to-bracket"></i> Login
+                </button>
+
+                <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; margin-top: 10px;">
+                    <button onclick="window.open('https://wa.me/8801621244970?text=আসসালামু%20আলাইকুম,%20আমি%20লাইসেন্স%20কিনতে%20চাই।', '_blank')" style="width: 100%; padding: 14px; background: #25D366; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 15px; transition: 0.3s; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3);">
+                        <i class="fa-brands fa-whatsapp" style="font-size: 20px;"></i> Get License
+                    </button>
+
+                    <button onclick="guestLogin()" style="width: 100%; padding: 14px; background: transparent; color: #38bdf8; border: 2px solid #38bdf8; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 15px; margin-top: 15px; transition: 0.3s; box-shadow: 0 4px 10px rgba(56, 189, 248, 0.2);">
+                        <i class="fa-solid fa-gift"></i> Start 15 Days Free Trial
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="super-admin-panel" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); z-index: 99999; overflow-y: auto; color: white; padding: 20px; display: none;">
+        <div style="max-width: 1000px; margin: 40px auto; background: #1e293b; padding: 30px; border-radius: 12px; border: 2px solid #38bdf8; box-shadow: 0 15px 40px rgba(0,0,0,0.5);">
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 15px; margin-bottom: 20px;">
+                <h2 style="color: #38bdf8; margin: 0;"><i class="fa-solid fa-user-tie"></i> Master Admin Control</h2>
+                <div>
+                    <button class="btn btn-warning" onclick="changeAdminPassword()" style="margin-right: 10px;">
+                        <i class="fa-solid fa-key"></i> Change Password
+                    </button>
+                    <button class="btn btn-danger" onclick="logoutAdmin()">Exit Admin</button>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid #334155; padding-bottom: 15px; overflow-x: auto;">
+                <button class="btn admin-tab-btn active" onclick="switchAdminTab(event, 'admin-shops')" style="background: #38bdf8; color: #0f172a; flex: 1; min-width: 150px;">
+                    <i class="fa-solid fa-store"></i> User List & Licenses
+                </button>
+                <button class="btn admin-tab-btn" onclick="switchAdminTab(event, 'admin-settings')" style="background: transparent; border: 1px solid #38bdf8; color: #38bdf8; flex: 1; min-width: 150px;">
+                    <i class="fa-solid fa-gear"></i> Global Settings
+                </button>
+            </div>
+
+            <div id="admin-shops" class="admin-tab-content" style="display: block;">
+                
+                <div style="display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 120px; background: linear-gradient(135deg, #3b82f6, #2563eb); padding: 20px; border-radius: 8px; color: white; text-align: center;">
+                        <h4 style="margin: 0;">Total Users</h4>
+                        <h2 id="admin-stat-total" style="margin: 10px 0 0;">0</h2>
+                    </div>
+                    <div style="flex: 1; min-width: 120px; background: linear-gradient(135deg, #10b981, #059669); padding: 20px; border-radius: 8px; color: white; text-align: center;">
+                        <h4 style="margin: 0;">Active Pro</h4>
+                        <h2 id="admin-stat-pro" style="margin: 10px 0 0;">0</h2>
+                    </div>
+                    <div style="flex: 1; min-width: 120px; background: linear-gradient(135deg, #f59e0b, #d97706); padding: 20px; border-radius: 8px; color: white; text-align: center;">
+                        <h4 style="margin: 0;">Trial/Suspended</h4>
+                        <h2 id="admin-stat-trial" style="margin: 10px 0 0;">0</h2>
+                    </div>
+                </div>
+
+                <h3 style="color: #10b981; margin-bottom: 10px;"><i class="fa-solid fa-plus-circle"></i> Create New License</h3>
+                <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="new-shop-id" placeholder="Shop ID (ex: DEMO-01)" style="flex: 2; min-width: 150px; padding: 12px; background: #ffffff; color: #000000; font-weight: bold; text-transform: uppercase; border: 2px solid #38bdf8; border-radius: 6px;">
+                    <input type="text" id="new-shop-pass" placeholder="Password" value="123456" style="flex: 2; min-width: 150px; padding: 12px; background: #ffffff; color: #000000; font-weight: bold; border: 2px solid #38bdf8; border-radius: 6px;">
+                    <input type="number" id="custom-days" placeholder="Days" value="30" style="flex: 1; min-width: 80px; padding: 12px; background: #ffffff; color: #000000; font-weight: bold; border: 2px solid #38bdf8; border-radius: 6px;">
+                    <button class="btn btn-primary" onclick="generateLicense()" style="flex: 1; min-width: 120px;">
+                        <i class="fa-solid fa-key"></i> Generate
+                    </button>
+                </div>
+
+                <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; overflow-x: auto;">
+                    <h3 style="color: #fbbf24; margin-bottom: 15px;"><i class="fa-solid fa-database"></i> Global User / Shop List</h3>
+                    <table style="width: 100%; background: #0f172a; color: white; min-width: 600px; border-collapse: collapse;">
+                        <thead style="background: #334155;">
+                            <tr>
+                                <th style="padding: 10px; text-align: left;">Shop ID & Pass</th>
+                                <th style="padding: 10px; text-align: left;">Validity</th>
+                                <th style="padding: 10px; text-align: left;">Status</th>
+                                <th style="padding: 10px; text-align: left;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="master-shop-list">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="admin-settings" class="admin-tab-content" style="display: none;">
+                <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #f59e0b;">
+                    <h3 style="color: #f59e0b; margin-bottom: 15px;"><i class="fa-solid fa-globe"></i> Global App Settings</h3>
+                    
+                    <label style="color: #94a3b8; font-size: 13px;">App Name:</label>
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <input type="text" id="global-app-name-input" placeholder="SmartPOS Pro" style="flex: 1; padding: 12px; background: #ffffff; color: #000000; font-weight: bold; border-radius: 6px;">
+                        <button class="btn btn-warning" onclick="saveGlobalAppName()">Save Name</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="pos-container" style="display: none !important;">
+        
+        <aside class="sidebar">
+            <div class="shop-header" style="padding: 20px 15px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); flex-shrink: 0;">
+                <h2 id="main-logo-text" style="color: #38bdf8; font-size: 18px; margin: 0; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="fa-solid fa-store"></i> <span id="shop-name-display">My Shop</span>
+                </h2>
+            </div>
+            
+            <div id="google_translate_element" style="padding: 10px 20px 0;"></div>
+            
+            <ul class="nav-menu">
+                <li id="nav-dashboard" class="active" onclick="switchPage('dashboard')">
+                    <i class="fa-solid fa-chart-pie"></i> Dashboard
+                </li>
+                <li id="nav-sell" onclick="switchPage('sell')">
+                    <i class="fa-solid fa-cart-shopping"></i> Sell / Billing
+                </li>
+                <li id="nav-sales" onclick="switchPage('sales')">
+                    <i class="fa-solid fa-file-invoice-dollar"></i> Selling List
+                </li>
+                <li id="nav-due" onclick="switchPage('due')">
+                    <i class="fa-solid fa-book"></i> Due List
+                </li>
+                <li id="nav-cost" onclick="switchPage('cost')">
+                    <i class="fa-solid fa-money-bill-wave"></i> Cost (খরচ)
+                </li>
+                <li id="nav-customer" onclick="switchPage('customer')">
+                    <i class="fa-solid fa-users"></i> Customers
+                </li>
+                <li id="nav-product" onclick="switchPage('product')">
+                    <i class="fa-solid fa-box-open"></i> Products
+                </li>
+                <li id="nav-analytics" onclick="switchPage('analytics')">
+                    <i class="fa-solid fa-chart-line"></i> Analytics
+                </li>
+                <li id="nav-settings" onclick="switchPage('settings')">
+                    <i class="fa-solid fa-gear"></i> Settings
+                </li>
+                <li id="nav-profile" onclick="switchPage('profile')">
+                    <i class="fa-solid fa-user-shield"></i> Profile
+                </li>
+                <li onclick="logoutSystem()" style="color: #ef4444; margin-top: 10px; cursor: pointer; margin-bottom: 20px;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </li>
+            </ul>
+
+            <div class="admin-footer" onclick="openAdminPanel()" style="cursor: pointer; padding: 15px 10px; background: #0f172a; border-top: 2px solid #38bdf8; text-align: center; flex-shrink: 0;" title="Master Admin Login">
+                <div style="font-size: 10px; color: #64748b; letter-spacing: 1px; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                    POWERED BY 
+                    <img id="sidebar-app-icon" src="" style="display:none; width:15px; height:15px; border-radius:3px; border: 1px solid #fff;">
+                    <i id="sidebar-app-icon-default" class="fa-solid fa-bolt" style="color: #38bdf8;"></i>
+                    <span id="sidebar-app-name">SmartPOS Pro</span>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <section id="dashboard" class="page-section active">
+                <div class="header-bar">
+                    <button class="btn btn-primary" style="background: #8b5cf6; border: none; box-shadow: 0 2px 5px rgba(139, 92, 246, 0.4);" onclick="openUserSupportModal()">
+                        <i class="fa-solid fa-headset"></i> Support
+                    </button>
+                    <div>
+                        <h2 style="margin-bottom: 8px;">Overview / ড্যাশবোর্ড 📊</h2>
+                        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                            <div id="sub-status-badge" style="background: #1e293b; color: white; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; border: 1px solid #334155; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                                <i class="fa-solid fa-spinner fa-spin"></i> Checking Status...
+                            </div>
+                            <div onclick="showSubscriptionPlans()" style="cursor: pointer; background: #fef08a; color: #b45309; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: bold; border: 1px solid #fde047; box-shadow: 0 2px 4px rgba(0,0,0,0.05); transition: 0.3s;">
+                                <i class="fa-solid fa-crown"></i> Upgrade
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div id="current-time" style="font-weight: bold; color: #64748b; margin-bottom: 5px;">Loading...</div>
+                        <div id="network-badge" style="font-size: 11px; padding: 4px 8px; border-radius: 4px; background: #10b981; color: #fff; display: inline-block;">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Auto-Sync Active
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom: 15px; color: #334155; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px;">📅 আজকের হিসাব (Today)</h3>
+                
+                <div class="summary-cards" style="margin-bottom: 25px;">
+                    <div class="card profit-card" style="background: linear-gradient(135deg, #10b981, #059669);">
+                        <h3 style="color: white;"><i class="fa-solid fa-hand-holding-dollar"></i> Profit (Gross)</h3>
+                        <h2 id="dash-today-profit" style="font-size: 28px; color: white;">৳ 0</h2>
+                    </div>
+                    <div class="card profit-card" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);">
+                        <h3 style="color: white;"><i class="fa-solid fa-sack-dollar"></i> Net Profit</h3>
+                        <h2 id="dash-today-net-profit" style="font-size: 28px; color: white;">৳ 0</h2>
+                    </div>
+                    <div class="card">
+                        <h3>Today's Sell</h3>
+                        <h2 id="dash-today-sell" style="color: #3b82f6;">৳ 0</h2>
+                    </div>
+                    <div class="card">
+                        <h3>Today's Cost</h3>
+                        <h2 id="dash-today-cost" style="color: #ef4444;">৳ 0</h2>
+                    </div>
+                    <div class="card">
+                        <h3>Due Collection</h3>
+                        <h2 id="dash-today-due-col" style="color: #f59e0b;">৳ 0</h2>
+                    </div>
+                    <div class="card">
+                        <h3>Cash in Hand</h3>
+                        <h2 id="dash-today-cash" style="color: #0ea5e9;">৳ 0</h2>
+                    </div>
+                    <div class="card">
+                        <h3>Total Bills</h3>
+                        <h2 id="dash-today-bills">0 টি</h2>
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom: 15px; color: #334155; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px;">📆 মাসিক ও সার্বিক হিসাব (Monthly)</h3>
+                
+                <div class="summary-cards" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 25px;">
+                    <div class="card" style="border-left: 4px solid #3b82f6;">
+                        <h3>Month Sell</h3>
+                        <h2 id="dash-month-sell" style="color: #3b82f6;">৳ 0</h2>
+                    </div>
+                    <div class="card" style="border-left: 4px solid #10b981;">
+                        <h3>Month Profit</h3>
+                        <h2 id="dash-month-profit" style="color: #10b981;">৳ 0</h2>
+                    </div>
+                    <div class="card" style="border-left: 4px solid #ef4444;">
+                        <h3>Month Cost</h3>
+                        <h2 id="dash-month-cost" style="color: #ef4444;">৳ 0</h2>
+                    </div>
+                    <div class="card" style="border-left: 4px solid #8b5cf6;">
+                        <h3>Net Month Profit</h3>
+                        <h2 id="dash-month-net-profit" style="color: #8b5cf6;">৳ 0</h2>
+                    </div>
+                    <div class="card" style="border-left: 4px solid #f59e0b;">
+                        <h3>Total Market Due</h3>
+                        <h2 id="dash-total-due" style="color: #f59e0b;">৳ 0</h2>
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom: 15px; color: #334155; border-bottom: 2px solid #e2e8f0; padding-bottom: 5px;">📈 গ্রাফ ও ট্রেন্ড (Graphs & Trends)</h3>
+                
+                <div class="dashboard-widgets" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="widget" style="grid-column: span 2;">
+                        <h3><i class="fa-solid fa-chart-area"></i> Sell Graph (Last 7 Days)</h3>
+                        <div style="height: 250px; margin-top: 15px;">
+                            <canvas id="myChart" style="width: 100%; height: 100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="sales" class="page-section hidden">
+                <div class="header-bar">
+                    <h2>Sales History (বিক্রির তালিকা)</h2>
+                    <button class="btn btn-primary" onclick="printReport('sales-print-area')">
+                        <i class="fa-solid fa-print"></i> Print Report
+                    </button>
+                </div>
+                
+                <div class="card" style="margin-bottom: 20px; background: #f8fafc; border: 1px solid #cbd5e1;">
+                    <label style="font-weight: bold; color: #334155;">Filter by Customer:</label>
+                    <select id="sales-customer-filter" onchange="filterSalesHistory()" style="width: 100%; padding: 10px; font-size: 16px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc;">
+                        <option value="All">All Customers</option>
+                    </select>
+                    
+                    <div class="grid-container grid-3" style="margin-top: 15px;">
+                        <div class="card" style="background:#eff6ff; border:none; text-align:center; padding: 15px;">
+                            <h4 style="color:#3b82f6;">Total Sell</h4>
+                            <h2 id="filter-total-sell" style="color:#1e3a8a;">৳ 0</h2>
+                        </div>
+                        <div class="card" style="background:#ecfdf5; border:none; text-align:center; padding: 15px;">
+                            <h4 style="color:#10b981;">Total Paid</h4>
+                            <h2 id="filter-total-paid" style="color:#065f46;">৳ 0</h2>
+                        </div>
+                        <div class="card" style="background:#fef2f2; border:none; text-align:center; padding: 15px;">
+                            <h4 style="color:#ef4444;">Current Due</h4>
+                            <h2 id="filter-total-due" style="color:#991b1b;">৳ 0</h2>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" id="sales-print-area">
+                    <h2 class="print-only" style="text-align:center; margin-bottom: 10px;">Sales Report</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Invoice No.</th>
+                                <th>Date</th>
+                                <th>Customer Name</th>
+                                <th>Total Bill</th>
+                                <th>Paid</th>
+                                <th>Due</th>
+                                <th class="no-print">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sales-history-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="sell" class="page-section hidden">
+                <div class="header-bar">
+                    <h2>Billing Page (সেল ও বিলিং) 🛒</h2>
+                    <button class="btn btn-warning" onclick="showHoldList()">
+                        <i class="fa-solid fa-list-check"></i> Show Hold Invoices
+                    </button>
+                </div>
+
+                <div class="billing-container">
+                    
+                    <div class="billing-left">
+                        <div class="custom-dropdown" style="margin-bottom: 15px;">
+                            <div style="display: flex; gap: 10px;">
+                                <div style="position: relative; flex: 1;">
+                                    <input type="text" id="cus-search-billing" placeholder="Search Customer (A-Z)..." autocomplete="off" onkeyup="filterDropdown('cus-search-billing', 'cus-dropdown-list')" onclick="toggleDropdown('cus-dropdown-list')">
+                                    <div id="cus-dropdown-list" class="dropdown-list hidden"></div>
+                                </div>
+                                <button class="btn btn-primary" onclick="walkIn()">Walk-in</button>
+                            </div>
+                        </div>
+
+                        <div class="custom-dropdown" style="margin-bottom: 20px; position: relative;">
+                            <input type="text" id="billing-product-search" placeholder="🔍 Scan Barcode or Search Products..." autocomplete="off" onkeyup="handleBarcodeScan(event)" onclick="toggleDropdown('prod-dropdown-list')" style="width: 100%; padding: 14px 15px 14px 40px; border: 2px solid #93c5fd; border-radius: 8px; font-size: 16px; background: #eff6ff; color: #1e3a8a; font-weight: bold; box-shadow: 0 4px 6px rgba(59,130,246,0.1); cursor: text;">
+                            <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 15px; top: 16px; color: #3b82f6; font-size: 18px;"></i>
+                            <div id="prod-dropdown-list" class="dropdown-list hidden"></div>
+                        </div>
+
+                        <div class="card" style="padding: 0;">
+                            <table class="data-table" style="margin-top: 0;">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Qty</th>
+                                        <th>Price</th>
+                                        <th>Total</th>
+                                        <th>X</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cart-items"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="billing-right">
+                        <div class="calculation-box">
+                            <p>Sub Total: <span id="bill-subtotal">৳ 0</span></p>
+                            <p>
+                                <span><input type="checkbox" id="chk-prev-due" onchange="calculateCartTotal()"> Add Prev. Due:</span>
+                                <span id="bill-prev-due" style="color: #ef4444; font-weight: bold;">৳ 0</span>
+                            </p>
+                            <p>Discount (৳): <input type="number" id="bill-discount" style="width: 80px;" oninput="calculateCartTotal()"></p>
+                            <h2 class="grand-total" id="bill-grand-total">Total: ৳ 0</h2>
+                        </div>
+                        
+                        <div class="payment-section">
+                            <label style="display: block; font-weight: bold; margin-bottom: 5px;">Paid Amount (৳):</label>
+                            <input type="number" step="any" id="bill-paid" placeholder="Enter Paid Amount" oninput="updateDueCalculation()" style="margin-bottom: 10px;">
+                            
+                            <label style="display: block; font-weight: bold; margin-bottom: 5px; color: #ef4444;">Due Amount (৳):</label>
+                            <input type="number" step="any" id="bill-due-amount" style="background: #fee2e2; color: #ef4444; font-weight: bold;" readonly value="0">
+                        </div>
+                        
+                        <div class="action-buttons" style="display: grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top: 15px;">
+                            <button class="btn btn-danger" onclick="clearCart()">Clear Bill</button>
+                            <button class="btn btn-warning" onclick="holdInvoice()">Hold Bill</button>
+                            <button class="btn btn-primary" onclick="finalizeSale('save')">Sell (Save)</button>
+                            <button class="btn btn-success" onclick="finalizeSale('print')"><i class="fa-solid fa-print"></i> Print</button>
+                            <button class="btn btn-success" style="background: #25D366; grid-column: span 2;" onclick="finalizeSale('whatsapp')"><i class="fa-brands fa-whatsapp"></i> WhatsApp Memo</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="cost" class="page-section hidden">
+                <div class="header-bar">
+                    <h2>Cost Management (খরচের হিসাব)</h2>
+                    <div class="tab-switch">
+                        <button class="btn btn-primary active" id="btn-daily-cost" onclick="switchCostTab('daily')">Daily Cost</button>
+                        <button class="btn btn-outline" id="btn-monthly-cost" onclick="switchCostTab('monthly')">Monthly Cost</button>
+                    </div>
+                </div>
+                
+                <div class="card cost-entry" style="background: #fffbe6; border-left: 4px solid #f59e0b; display: flex; gap: 10px; align-items: center; margin-bottom: 20px; padding: 15px; flex-wrap: wrap;">
+                    <div style="flex:1; display:flex; gap:5px; min-width: 200px;">
+                        <select id="exp-cat-daily" class="cost-cat" style="width:100%;">
+                            <option>Tea/Nasta</option>
+                            <option>Transport</option>
+                        </select>
+                        <select id="exp-cat-monthly" class="cost-cat hidden" style="width:100%;">
+                            <option>Shop Rent</option>
+                            <option>Electricity Bill</option>
+                        </select>
+                        <button class="btn btn-outline btn-small" onclick="document.getElementById('addCatModal').classList.remove('hidden')" title="Add New Category">+</button>
+                    </div>
+                    <input type="number" id="exp-amount" placeholder="Amount (৳)" style="flex: 1; min-width: 150px;">
+                    <input type="text" id="exp-note" placeholder="Note (Optional)" style="flex: 2; min-width: 200px;">
+                    <button class="btn btn-success" onclick="addExpense()">+ Add Expense</button>
+                </div>
+
+                <div class="grid-container grid-2">
+                    <div class="card text-center" style="border-left: 5px solid #ef4444;">
+                        <h3>Total Cost</h3>
+                        <h1 id="total-exp-display" style="font-size: 40px; margin-top: 10px; color: #ef4444;">৳ 0</h1>
+                    </div>
+                    <div class="card">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Amount</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="exp-list-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="customer" class="page-section hidden">
+                <div class="header-bar">
+                    <h2>Customer Directory 👥</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-primary" onclick="openCustomerModal()">
+                            <i class="fa-solid fa-user-plus"></i> Add New
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom: 20px;">
+                    <div style="position: relative;">
+                        <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 15px; top: 15px; color: #94a3b8;"></i>
+                        <input type="text" id="cus-search-page" placeholder="Search by Name, Phone..." onkeyup="filterCustomerTable()" style="padding-left: 45px; margin-bottom: 0;">
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 0; overflow: hidden;">
+                    <table class="data-table" style="margin: 0;">
+                        <thead>
+                            <tr>
+                                <th>Profile & Name</th>
+                                <th>Category</th>
+                                <th>Due Amount</th>
+                                <th class="no-print">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cus-list-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="product" class="page-section hidden">
+                <div class="header-bar">
+                    <h2>Product / Inventory 📦</h2>
+                    <div style="display: flex; gap: 15px; align-items: center; font-weight: bold;">
+                        <span style="background: #e0f2fe; padding: 10px; border-radius: 5px;">Total: <span id="stat-total-items">0</span></span>
+                        <span style="background: #fee2e2; padding: 10px; border-radius: 5px; color: #ef4444;">Low Stock: <span id="stat-low-stock">0</span></span>
+                        <span style="background: #dcfce7; padding: 10px; border-radius: 5px; color: #166534;">Value: <span id="stat-total-value">৳ 0</span></span>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <input type="text" id="prod-search-input" placeholder="🔍 Search Product by Name..." onkeyup="searchProductTable()" style="flex: 2; min-width: 250px;">
+                    <button class="btn btn-warning" style="flex: 1; min-width: 100px;" onclick="renderAllTables()">All</button>
+                    <button class="btn btn-danger" style="flex: 1; min-width: 120px;" onclick="filterLowStock()">Low Stock</button>
+                    <button class="btn btn-primary" style="flex: 1; min-width: 150px;" onclick="openProductModal()">+ Add Product</button>
+                </div>
+                
+                <div class="card" style="padding: 0;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Image & Name</th>
+                                <th>Barcode</th>
+                                <th>Stock</th>
+                                <th>Buy Price</th>
+                                <th>Sell Price</th>
+                                <th>Profit</th>
+                                <th class="no-print">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="prod-list-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="due" class="page-section hidden">
+                <div class="header-bar">
+                    <h2>Market Due (বাকি তালিকা) 📉</h2>
+                </div>
+
+                <div class="grid-container grid-2" style="margin-bottom: 20px;">
+                    <div class="card" style="border-left: 5px solid #ef4444; background: #fff5f5;">
+                        <h3 style="font-size: 13px; color: #b91c1c;">Total Market Due (মোট বাকি)</h3>
+                        <h1 style="color: #ef4444; font-size: 32px;" id="total-market-due-display">৳ 0</h1>
+                    </div>
+                    <div class="card" style="border-left: 5px solid #f59e0b; background: #fffbeb;">
+                        <h3 style="font-size: 13px; color: #b45309;">Total Debtors (বাকিদার)</h3>
+                        <h1 id="total-debtors-display" style="font-size: 32px; color: #f59e0b;">0 জন</h1>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom: 20px; display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+                    <div style="position: relative; flex: 2; min-width: 250px;">
+                        <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 15px; top: 13px; color: #94a3b8;"></i>
+                        <input type="text" id="due-search" placeholder="Search by name or phone..." onkeyup="renderDueTable()" style="padding-left: 40px; margin-bottom: 0;">
+                    </div>
+                    <select id="due-sort" onchange="renderDueTable()" style="flex: 1; margin-top: 0; min-width: 150px;">
+                        <option value="high">High to Low Due</option>
+                        <option value="name">Name (A-Z)</option>
+                    </select>
+                </div>
+
+                <div class="card" id="due-print-area" style="padding: 0; overflow: hidden;">
+                    <table class="data-table" style="margin: 0;">
+                        <thead>
+                            <tr>
+                                <th>Customer Info</th>
+                                <th>Ledger</th>
+                                <th>Balance</th>
+                                <th class="no-print" style="text-align: center;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="due-list-body"></tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <section id="analytics" class="page-section hidden">
+                <div class="header-bar">
+                    <h2>Chart & Analytics 📊</h2>
+                    <button class="btn btn-primary" onclick="printReport('analytics-print-area')">
+                        <i class="fa-solid fa-download"></i> Full Report
+                    </button>
+                </div>
+
+                <div id="analytics-print-area">
+                    <h2 class="print-only" style="text-align: center; margin-bottom: 15px;">Yearly Business Report</h2>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin-bottom: 25px;">
+                        <div class="card" style="border-left: 4px solid #8b5cf6; padding: 15px;">
+                            <h3 style="font-size: 12px; color: #64748b;">📦 Total Products</h3>
+                            <h2 id="stat-tot-prod" style="font-size: 20px;">0</h2>
+                        </div>
+                        <div class="card" style="border-left: 4px solid #ec4899; padding: 15px;">
+                            <h3 style="font-size: 12px; color: #64748b;">👥 Customers</h3>
+                            <h2 id="stat-tot-cus" style="font-size: 20px;">0</h2>
+                        </div>
+                        <div class="card" style="border-left: 4px solid #10b981; padding: 15px;">
+                            <h3 style="font-size: 12px; color: #64748b;">💰 Market Due</h3>
+                            <h2 id="stat-tot-due" style="font-size: 20px; color:#10b981;">৳ 0</h2>
+                        </div>
+                        <div class="card" style="border-left: 4px solid #3b82f6; padding: 15px;">
+                            <h3 style="font-size: 12px; color: #64748b;">📈 Total Sales</h3>
+                            <h2 id="stat-tot-sale" style="font-size: 20px; color:#3b82f6;">৳ 0</h2>
+                        </div>
+                        <div class="card" style="border-left: 4px solid #6366f1; padding: 15px;">
+                            <h3 style="font-size: 12px; color: #64748b;"><i class="fa-solid fa-vault"></i> Total Investment</h3>
+                            <h2 id="stat-tot-invest" style="font-size: 20px; color:#6366f1;">৳ 0</h2>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;">
+                        
+                        <div class="card">
+                            <h3 style="color: #334155; margin-bottom: 15px;">Business Trends</h3>
+                            <div style="height: 300px;">
+                                <canvas id="advancedAnalyticsChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3 style="color: #000; font-size: 16px; font-weight:bold; margin-bottom: 10px;">
+                                <i class="fa-solid fa-chart-line"></i> Price Trends
+                            </h3>
+                            <div id="price-trend-dashboard" style="max-height: 280px; overflow-y: auto;"></div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="margin-top: 25px; border-left: 5px solid #3b82f6;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                            <h3 style="color: #334155; margin: 0;"><i class="fa-solid fa-calendar-days"></i> বিস্তারিত রিপোর্ট (History)</h3>
+                            <select id="history-filter-type" onchange="renderHistoricalReport()" style="width: auto; padding: 8px 15px; border-radius: 6px; font-weight: bold; border: 2px solid #cbd5e1; background: #f8fafc;">
+                                <option value="daily">Day by Day</option>
+                                <option value="monthly" selected>Month by Month</option>
+                                <option value="yearly">Year by Year</option>
+                            </select>
+                        </div>
+                        <div style="overflow-x: auto;">
+                            <table class="data-table" style="min-width: 700px;">
+                                <thead style="background: #1e293b; color: white;">
+                                    <tr>
+                                        <th style="color: white;">Period</th>
+                                        <th style="color: white;">Sell</th>
+                                        <th style="color: white;">Cost</th>
+                                        <th style="color: white;">New Due</th>
+                                        <th style="color: white;">Due Collect</th>
+                                        <th style="color: white;">Net Profit</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="historical-report-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="settings" class="page-section hidden">
+                <div class="header-bar">
+                    <div>
+                        <h2 style="margin-bottom: 5px;">সফটওয়্যার কন্ট্রোল সেন্টার ⚙️</h2>
+                    </div>
+                    <button class="btn btn-success" onclick="saveSettings()" style="padding: 12px 25px; font-size: 16px;">
+                        <i class="fa-solid fa-floppy-disk"></i> Save Changes
+                    </button>
+                </div> 
+
+                <div class="grid-container grid-2" style="gap: 20px;">
+                    
+                    <div class="card" style="border-top: 4px solid #3b82f6;">
+                        <h3 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; margin-bottom: 15px; color: #1e293b;">
+                            <i class="fa-solid fa-store" style="color: #3b82f6;"></i> ১. Business Info
+                        </h3>
+                        <label class="font-bold" style="font-size: 13px; color: #475569;">দোকানের ঠিকানা (Address):</label> 
+                        <textarea id="setting-shop-address" rows="2" placeholder="e.g., 123 Main Street, Dhaka" style="resize: none;"></textarea>
+                        
+                        <div style="display: flex; gap: 15px; margin-top: 5px;">
+                            <div style="flex: 1;">
+                                <label class="font-bold" style="font-size: 13px; color: #475569;">Currency (মুদ্রা):</label>
+                                <select id="setting-currency">
+                                    <option value="৳">৳ (BDT)</option>
+                                    <option value="$">$ (USD)</option>
+                                </select>
+                            </div>
+                            <div style="flex: 1;">
+                                <label class="font-bold" style="font-size: 13px; color: #475569;">Tax / VAT (%):</label>
+                                <input type="number" id="setting-tax-percent" placeholder="0" value="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-top: 4px solid #f59e0b;">
+                        <h3 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; margin-bottom: 15px; color: #1e293b;">
+                            <i class="fa-solid fa-file-invoice" style="color: #f59e0b;"></i> ২. Invoice Customization
+                        </h3>
+                        <div style="display: flex; gap: 15px;">
+                            <div style="flex: 1;">
+                                <label class="font-bold" style="font-size: 13px;">Header:</label>
+                                <input type="text" id="setting-inv-header" value="বিসমিল্লাহির রাহমানির রাহিম">
+                            </div>
+                            <div style="flex: 1;">
+                                <label class="font-bold" style="font-size: 13px;">Footer:</label>
+                                <input type="text" id="setting-inv-footer" value="*** বিক্রিত মাল ফেরত হয় না ***">
+                            </div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
+                            <span class="font-bold" style="font-size: 13px;">Paper Size:</span>
+                            <select id="setting-print-size" style="width: auto; margin: 0;">
+                                <option value="thermal">Thermal</option>
+                                <option value="a4-portrait">A4 Print</option>
+                            </select>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                            <span class="font-bold" style="font-size: 13px;">রিসিটে আগের বাকি দেখান:</span>
+                            <label class="switch">
+                                <input type="checkbox" id="setting-show-due" checked>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="card" style="grid-column: span 2; border: 1px solid #ef4444; background: #fff;">
+                        <h3 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; margin-bottom: 15px; color: #ef4444;">
+                            <i class="fa-solid fa-shield-halved"></i> Data Security & Wipe
+                        </h3>
+                        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                            <button class="btn btn-primary" style="flex: 1; background: #334155; color: white;" onclick="downloadJSONBackup()">
+                                <i class="fa-solid fa-download"></i> Download Full Backup
+                            </button>
+                            <label class="btn btn-outline" style="flex: 1; text-align: center; cursor: pointer; margin: 0; border-color: #334155; color: #334155;">
+                                <i class="fa-solid fa-upload"></i> Restore Backup File
+                                <input type="file" accept=".json" style="display: none;" onchange="restoreJSONBackup(event)">
+                            </label>
+                        </div>
+                        <div style="margin-top: 20px; padding: 15px; border-radius: 8px; background: #fef2f2; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                            <div>
+                                <h4 style="color: #ef4444; margin-bottom: 5px; font-size: 15px;">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> Factory Reset
+                                </h4>
+                                <p style="font-size: 12px; color: #991b1b; margin: 0;">দোকানের সমস্ত ডাটা মুছে একদম নতুনের মতো করতে চান?</p>
+                            </div>
+                            <button class="btn btn-danger" onclick="factoryResetApp()">Wipe All Data</button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+            
+            <section id="profile" class="page-section hidden">
+                <div class="header-bar">
+                    <div>
+                        <h2 style="margin-bottom: 5px;">User Profile & Settings 👤</h2>
+                    </div>
+                    <button class="btn btn-success" onclick="saveUserProfile()" style="padding: 12px 25px; font-size: 16px;">
+                        <i class="fa-solid fa-floppy-disk"></i> Save Profile
+                    </button>
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                    <div style="flex: 1; min-width: 300px; display: flex; flex-direction: column; gap: 20px;">
+                        
+                        <div class="card" style="text-align: center; border-top: 4px solid #3b82f6;">
+                            <label for="user-profile-img-input" style="cursor: pointer; position: relative; display: inline-block;">
+                                <img id="display-profile-img" src="https://via.placeholder.com/120?text=User" style="border-radius: 50%; border: 4px solid #e2e8f0; width: 120px; height: 120px; object-fit: cover; background: #fff;">
+                                <div style="position: absolute; bottom: 5px; right: 5px; background: #3b82f6; color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 14px; border: 2px solid white;">
+                                    <i class="fa-solid fa-camera"></i>
+                                </div>
+                            </label>
+                            <input type="file" id="user-profile-img-input" style="display: none;" onchange="previewUserProfileImage(event)">
+                            <h3 id="display-user-name-title" style="margin-top: 15px; color: #1e293b; font-size: 20px;">Admin User</h3>
+                            <div style="margin-top: 20px; background: #f8fafc; padding: 12px; border-radius: 8px; font-size: 12px; color: #475569; border: 1px solid #e2e8f0;">
+                                <b style="color: #1e293b;">Shop/License ID:</b><br>
+                                <span id="profile-display-shopid" style="font-family: monospace; font-size: 15px; color: #3b82f6; font-weight: bold;">...</span>
+                            </div>
+                        </div>
+
+                        <div class="card" style="border-top: 4px solid #f59e0b; background: #fffbeb;">
+                            <h3 style="border-bottom: 2px solid #fde68a; padding-bottom: 10px; margin-bottom: 15px; color: #d97706;">
+                                <i class="fa-solid fa-certificate"></i> Subscription Status
+                            </h3>
+                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                <div style="display: flex; justify-content: space-between; font-size: 14px; border-bottom: 1px dashed #fcd34d; padding-bottom: 8px;">
+                                    <span style="color: #92400e; font-weight: bold;">বর্তমান প্ল্যান:</span>
+                                    <span id="profile-sub-type" style="font-weight: bold; color: #1e3a8a; background: #dbeafe; padding: 2px 8px; border-radius: 4px;">Loading...</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; font-size: 14px; border-bottom: 1px dashed #fcd34d; padding-bottom: 8px;">
+                                    <span style="color: #92400e; font-weight: bold;">স্ট্যাটাস:</span>
+                                    <span id="profile-sub-status" style="font-weight: bold;">...</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; font-size: 14px; padding-bottom: 8px;">
+                                    <span style="color: #92400e; font-weight: bold;">মেয়াদ শেষ:</span>
+                                    <span id="profile-sub-expiry" style="font-weight: bold; color: #ef4444;">...</span>
+                                </div>
+                            </div>
+                            <button onclick="showSubscriptionPlans()" class="btn btn-warning" style="width: 100%; margin-top: 15px; font-size: 14px; padding: 12px;">
+                                <i class="fa-solid fa-rocket"></i> Renew / Upgrade Plan
+                            </button>
+                        </div>
+                    </div>
+
+                    <div style="flex: 2; min-width: 350px; display: flex; flex-direction: column; gap: 20px;">
+                        
+                        <div class="card" style="border-left: 4px solid #10b981;">
+                            <h3 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; margin-bottom: 15px; color: #1e293b;">
+                                <i class="fa-solid fa-address-card" style="color: #10b981;"></i> Personal & Business Info
+                            </h3>
+                            <div class="grid-container grid-2" style="gap: 15px;">
+                                <div>
+                                    <label class="font-bold" style="font-size: 13px;">Full Name:</label>
+                                    <input type="text" id="profile-user-name" placeholder="e.g., Shaharia" style="margin-bottom: 0;">
+                                </div>
+                                <div>
+                                    <label class="font-bold" style="font-size: 13px;">Shop Name:</label>
+                                    <input type="text" id="profile-shop-name" placeholder="e.g., Shop Name" style="margin-bottom: 0;">
+                                </div>
+                                <div>
+                                    <label class="font-bold" style="font-size: 13px;">Phone Number:</label>
+                                    <input type="text" id="profile-user-phone" placeholder="e.g., 017..." style="margin-bottom: 0;">
+                                </div>
+                                <div>
+                                    <label class="font-bold" style="font-size: 13px;">Email Address:</label>
+                                    <input type="email" id="profile-user-email" placeholder="email@gmail.com" style="margin-bottom: 0;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card" style="border-left: 4px solid #ef4444;">
+                            <h3 style="border-bottom: 1px solid #f1f5f9; padding-bottom: 10px; margin-bottom: 15px; color: #1e293b;">
+                                <i class="fa-solid fa-shield-halved" style="color: #ef4444;"></i> Security
+                            </h3>
+                            <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #e2e8f0; flex-wrap: wrap; gap: 10px;">
+                                <div>
+                                    <h4 style="margin: 0; color: #1e293b; font-size: 15px;">Login Password</h4>
+                                </div>
+                                <button class="btn btn-warning" onclick="changeUserPassword()" style="font-weight: bold; color: #000;">
+                                    <i class="fa-solid fa-key"></i> Change Password
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>        
+
+            <div id="userSupportModal" class="modal hidden">
+                <div class="modal-content" style="max-width: 500px; padding: 0; border-radius: 12px; overflow: hidden;">
+                    <div style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
+                        <h2 style="margin: 0; font-size: 18px;"><i class="fa-solid fa-headset"></i> Support & Helpbox</h2>
+                        <span onclick="document.getElementById('userSupportModal').classList.add('hidden')" style="font-size: 24px; cursor: pointer;">&times;</span>
+                    </div>
+                    <div style="padding: 20px; background: #f8fafc;">
+                        <label style="font-weight: bold; font-size: 13px; color: #334155;">নতুন মেসেজ লিখুন:</label>
+                        <textarea id="user-support-msg" rows="3" placeholder="আপনার সমস্যা বা প্রশ্ন এখানে লিখুন..." style="width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; margin-bottom: 10px; resize: none;"></textarea>
+                        <button class="btn btn-primary" style="width: 100%; background: #8b5cf6; border: none; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(139, 92, 246, 0.3);" onclick="submitSupportTicket()">
+                            <i class="fa-solid fa-paper-plane"></i> Send Message
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="barcodeModal" class="modal hidden">
+                <div class="modal-content" style="max-width: 400px; padding: 0; border-radius: 12px; overflow: hidden;">
+                    <div style="background: #1e293b; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
+                        <h2 style="margin: 0; font-size: 18px;"><i class="fa-solid fa-barcode"></i> Print Barcode Labels</h2>
+                        <span onclick="document.getElementById('barcodeModal').classList.add('hidden')" style="font-size: 24px; cursor: pointer;">&times;</span>
+                    </div>
+                    <div style="padding: 20px; background: #f1f5f9; text-align: center;">
+                        <div id="barcode-print-area" style="padding: 15px; border-radius: 8px; display: inline-block; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                            <div style="width: 180px; text-align: center; font-family: 'Arial', sans-serif;">
+                                <h4 id="barcode-shop-name" style="margin: 0; font-size: 14px; color: #000; font-weight: 800; text-transform: uppercase;">SHOP NAME</h4>
+                                <p id="barcode-prod-name" style="margin: 2px 0; font-size: 12px; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold;">Product Name</p>
+                                <svg id="barcode-svg" style="width: 100%; height: 50px; margin: 2px 0;"></svg>
+                                <div style="display: flex; justify-content: center; align-items: center; gap: 5px; margin-top: 2px;">
+                                    <span style="font-size: 11px; color: #555;">MRP:</span>
+                                    <span id="barcode-price" style="font-weight: 900; font-size: 18px; color: #000;">৳ 0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px; text-align: left; background: white; padding: 15px; border-radius: 8px; border: 1px solid #cbd5e1;">
+                            <label style="font-size: 13px; font-weight: bold; color: #475569;">Quantity</label>
+                            <input type="number" id="barcode-qty" value="1" min="1" style="width: 100%; padding: 12px; margin-top: 5px; font-size: 16px; font-weight: bold; text-align: center;">
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; margin-top: 15px; padding: 12px; font-size: 15px;" onclick="printBarcodeStickers()"><i class="fa-solid fa-print"></i> Print Now</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="addProductModal" class="modal hidden">
+                <div class="modal-content">
+                    <div style="background: #3b82f6; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-radius: 8px; margin-bottom: 15px;">
+                        <h2 id="product-modal-title" style="margin: 0; font-size: 18px;"><i class="fa-solid fa-box-open"></i> Add Product</h2>
+                        <span onclick="document.getElementById('addProductModal').classList.add('hidden')" style="font-size: 24px; cursor: pointer; color: #fff;">&times;</span>
+                    </div>
+                    <div style="padding: 10px; background: #f8fafc;">
+                        <input type="hidden" id="editProdIndex" value="-1">
+                        <div style="text-align: center; margin-bottom: 15px;">
+                            <label for="newProdImg" style="display: inline-block; width: 80px; height: 80px; border: 2px dashed #94a3b8; border-radius: 50%; background: #fff; cursor: pointer; position: relative; overflow: hidden;"><img id="img-preview" src="https://via.placeholder.com/100?text=Upload" style="width: 100%; height: 100%; object-fit: cover;"></label>
+                            <input type="file" id="newProdImg" accept="image/*" style="display: none;" onchange="previewImage(event)">
+                        </div>
+                        <input type="text" id="newProdName" placeholder="Product Name *" style="margin-bottom: 15px;">
+                        <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                            <div style="flex: 2;"><input type="number" step="any" id="newStock" placeholder="Stock Qty *" style="margin-bottom: 0;"></div>
+                        </div>
+                        <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                            <div style="flex: 1;"><input type="number" step="any" id="newBuyPrice" placeholder="Buy Price *" style="margin-bottom: 0;"></div>
+                            <div style="flex: 1;"><input type="number" step="any" id="newSellPrice" placeholder="Sell Price *" style="margin-bottom: 0; border: 2px solid #3b82f6; background: #eff6ff; font-weight: bold;"></div>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 16px;" onclick="saveNewProduct()"><i class="fa-solid fa-floppy-disk"></i> Save Product</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="addCustomerModal" class="modal hidden">
+                <div class="modal-content">
+                    <div style="background: #10b981; color: white; padding: 15px; display: flex; justify-content: space-between; border-radius: 8px; margin-bottom: 15px;">
+                        <h2 id="cus-modal-title" style="margin: 0; font-size: 18px;">Add New Customer</h2>
+                        <span onclick="document.getElementById('addCustomerModal').classList.add('hidden')" style="cursor: pointer; font-size: 24px;">&times;</span>
+                    </div>
+                    <div style="padding: 10px; background: #f8fafc;">
+                        <input type="hidden" id="editCusIndex" value="-1">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <label for="newCusImg" style="display: inline-block; width: 80px; height: 80px; border-radius: 50%; border: 2px dashed #cbd5e1; cursor: pointer; overflow: hidden;"><img id="cus-img-preview" src="https://via.placeholder.com/80?text=User" style="width: 100%; height: 100%; object-fit: cover;"></label>
+                            <input type="file" id="newCusImg" accept="image/*" style="display: none;" onchange="previewCusImage(event)">
+                        </div>
+                        <input type="text" id="newCusName" placeholder="Customer Name *">
+                        <input type="text" id="newCusPhone" placeholder="Phone Number *">
+                        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                            <div style="flex: 1;"><label style="font-size: 11px; font-weight: bold; color: #64748b;">Opening Due (৳):</label><input type="number" id="newCusDue" value="0"></div>
+                        </div>
+                        <button class="btn btn-success" style="width: 100%; padding: 12px;" onclick="saveNewCustomer()">Save Customer Info</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="historyModal" class="modal hidden">
+                <div class="modal-content" style="max-width: 700px;">
+                    <div id="ledger-print-area">
+                        <div style="background: #1e293b; color: white; padding: 20px; border-radius: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                <div><h1 id="history-cus-name" style="margin: 0; font-size: 20px;">Customer Name</h1></div>
+                                <span onclick="document.getElementById('historyModal').classList.add('hidden')" class="no-print" style="cursor: pointer; font-size: 24px;">&times;</span>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+                                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px;"><small style="text-transform: uppercase; font-size: 10px;">Total Purchase</small><h2 id="ledger-tot-buy" style="margin: 5px 0 0;">৳ 0</h2></div>
+                                <div style="background: rgba(239, 68, 68, 0.2); padding: 15px; border-radius: 8px; border-left: 4px solid #ef4444;"><small style="text-transform: uppercase; font-size: 10px; color: #fca5a5;">Current Due</small><h2 id="ledger-tot-due" style="margin: 5px 0 0; color: #fca5a5;">৳ 0</h2></div>
+                            </div>
+                        </div>
+                        <div style="padding: 20px 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                <h3 style="margin: 0; font-size: 16px;"><i class="fa-solid fa-list-ul"></i> Transaction History</h3>
+                                <button class="btn btn-primary no-print" onclick="receiveDuePrompt()"><i class="fa-solid fa-hand-holding-dollar"></i> Receive Payment</button>
+                            </div>
+                            <table class="data-table" style="font-size: 13px;">
+                                <thead><tr><th>Date</th><th>Description</th><th>Amount</th></tr></thead>
+                                <tbody id="history-list-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="addCatModal" class="modal hidden">
+                <div class="modal-content" style="max-width: 300px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px;">
+                        <h2 style="font-size: 16px;">New Category</h2>
+                        <span onclick="document.getElementById('addCatModal').classList.add('hidden')" style="font-size: 24px; cursor: pointer; color: #ef4444;">&times;</span>
+                    </div>
+                    <input type="text" id="newCatName" placeholder="Category Name" style="width: 100%; margin-bottom: 15px;">
+                    <button class="btn btn-success" style="width: 100%;" onclick="saveCategory()">Add Category</button>
+                </div>
+            </div>
+
+            <div id="subscriptionModal" class="modal hidden">
+                <div class="modal-content" style="max-width: 600px; padding: 0; border-radius: 12px; overflow: hidden;">
+                    <div style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center;">
+                        <h2 style="margin: 0; font-size: 18px;"><i class="fa-solid fa-crown"></i> Premium Plans</h2>
+                        <span onclick="document.getElementById('subscriptionModal').classList.add('hidden')" style="font-size: 24px; cursor: pointer;">&times;</span>
+                    </div>
+                    <div style="padding: 25px; background: #f8fafc; text-align: center;">
+                        <div id="customer-plan-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;"></div>
+                    </div>
+                </div>
+            </div>        
+            
+            <div id="invoiceModal" class="modal hidden">
+                <div class="modal-content" style="max-width: 400px; padding: 0; border-radius: 12px; overflow: hidden;">
+                    <div style="background: #3b82f6; color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
+                        <h2 style="margin: 0; font-size: 18px;"><i class="fa-solid fa-file-invoice"></i> Invoice Details</h2>
+                        <span onclick="document.getElementById('invoiceModal').classList.add('hidden')" style="font-size: 24px; cursor: pointer;">&times;</span>
+                    </div>
+                    <div style="padding: 20px; background: white;" id="reprint-invoice-area"></div>
+                    <div style="padding: 15px; background: #f8fafc; text-align: center; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; justify-content: center;">
+                        <button class="btn btn-success" onclick="printReport('reprint-invoice-area')"><i class="fa-solid fa-print"></i> Re-Print</button>
+                        <button class="btn btn-outline" onclick="document.getElementById('invoiceModal').classList.add('hidden')">Close</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="adminLicenseModal" class="modal hidden">
+                <div class="modal-content" style="background: white; padding: 30px; border-radius: 10px; width: 400px; max-width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
+                    <h2 style="color: #000000; margin-bottom: 20px; text-align: center;"><i class="fa-solid fa-key"></i> Generate License</h2>
+                    
+                    <label style="display: block; font-weight: bold; color: #000000; margin-bottom: 5px;">License Key (Shop ID)</label>
+                    <input type="text" id="genKey" placeholder="e.g. BIS-01" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 2px solid #cbd5e1; border-radius: 6px; color: #000000; font-weight: bold; text-transform: uppercase;">
+                    
+                    <label style="display: block; font-weight: bold; color: #000000; margin-bottom: 5px;">Default Password</label>
+                    <input type="text" id="genPass" placeholder="e.g. 123456" style="width: 100%; padding: 10px; margin-bottom: 15px; border: 2px solid #cbd5e1; border-radius: 6px; color: #000000; font-weight: bold;">
+                    
+                    <label style="display: block; font-weight: bold; color: #000000; margin-bottom: 5px;">Validity (Days)</label>
+                    <input type="number" id="genDays" placeholder="e.g. 30" style="width: 100%; padding: 10px; margin-bottom: 20px; border: 2px solid #cbd5e1; border-radius: 6px; color: #000000; font-weight: bold;">
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="createNewLicense()" style="flex: 1; padding: 12px; background: #10b981; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Generate</button>
+                        <button onclick="document.getElementById('adminLicenseModal').classList.add('hidden')" style="padding: 12px; background: #ef4444; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Cancel</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script> 
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en', 
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE, 
+                autoDisplay: false
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <script src="script.js"></script>
+</body>
+</html>
